@@ -47,6 +47,14 @@ router.post(
   }
 );
 
+router.get("/session", async (req: Request, res: Response) => {
+  if (!req.session.userId) {
+    return res.status(401).json({ error: "You are not logged in." });
+  }
+  const user = await UserCollection.findOneByUserId(req.session.userId);
+  return res.status(200).json({ user: util.constructUserResponse(user) });
+});
+
 /**
  * Sign out a user
  *

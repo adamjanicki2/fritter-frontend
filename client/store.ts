@@ -1,6 +1,6 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
-import createPersistedState from 'vuex-persistedstate';
+import Vue from "vue";
+import Vuex from "vuex";
+import createPersistedState from "vuex-persistedstate";
 
 Vue.use(Vuex);
 
@@ -12,7 +12,8 @@ const store = new Vuex.Store({
     filter: null, // Username to filter shown freets by (null = show all)
     freets: [], // All freets created in the app
     username: null, // Username of the logged in user
-    alerts: {} // global success/error messages encountered during submissions to non-visible forms
+    goodSportScore: null, // Good sport score of the logged in user
+    alerts: {}, // global success/error messages encountered during submissions to non-visible forms
   },
   mutations: {
     alert(state, payload) {
@@ -30,6 +31,13 @@ const store = new Vuex.Store({
        * @param username - new username to set
        */
       state.username = username;
+    },
+    setGoodSportScore(state, score) {
+      /**
+       * Update the stored score to the specified one.
+       * @param score - new score to set
+       */
+      state.goodSportScore = score;
     },
     updateFilter(state, filter) {
       /**
@@ -49,13 +57,15 @@ const store = new Vuex.Store({
       /**
        * Request the server for the currently available freets.
        */
-      const url = state.filter ? `/api/users/${state.filter}/freets` : '/api/freets';
-      const res = await fetch(url).then(async r => r.json());
+      const url = state.filter
+        ? `/api/users/${state.filter}/freets`
+        : "/api/freets";
+      const res = await fetch(url).then(async (r) => r.json());
       state.freets = res;
-    }
+    },
   },
   // Store data across page refreshes, only discard on browser close
-  plugins: [createPersistedState()]
+  plugins: [createPersistedState()],
 });
 
 export default store;
