@@ -1,0 +1,32 @@
+:root {
+    --white: #fbf5f3;
+    --black: #0f0e0e;
+    --blue: #2B50AA;
+    --light-blue: #0AD3FF;
+  }
+
+  body {
+    color: var(--black);
+    font-weight: 300;
+    font-family: "Helvetica Neue", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+.off-black {
+    color: var(--black);
+}
+
+.bg-off-black {
+    background-color: var(--black);
+}
+
+.light-blue {
+    color: var(--light-blue);
+}
+
+.off-white {
+    color: var(--white);
+}
+
+.bordering {
+  border: 2px solid green;
+}
