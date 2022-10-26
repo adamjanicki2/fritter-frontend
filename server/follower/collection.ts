@@ -3,8 +3,8 @@ import type { Follower } from "./model";
 import FollowerModel from "./model";
 
 type FollowStatistics = {
+  following: number;
   followers: number;
-  followees: number;
 };
 class FollowerCollection {
   /**
@@ -36,7 +36,7 @@ class FollowerCollection {
   ): Promise<FollowStatistics> {
     const followers = await FollowerModel.find({ follower: userId }).count();
     const followees = await FollowerModel.find({ followee: userId }).count();
-    return { followers, followees };
+    return { following: followers, followers: followees };
   }
 
   /**

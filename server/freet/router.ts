@@ -55,7 +55,7 @@ router.get(
 /**
  * Get freets by followers
  *
- * @name GET /api/freets/feed
+ * @name GET /api/freets/feed?authorId=id
  *
  * @return {FreetResponse[]} - An array of freets created by user with id, authorId
  * @throws {403} - If no user is not signed in
@@ -66,7 +66,11 @@ router.get(
   [userValidator.isUserLoggedIn],
   async (req: Request, res: Response, next: NextFunction) => {
     const userId = (req.session.userId as string) ?? "";
-    const freets = await FreetCollection.findByFollowees(userId, "$in");
+    const freets = await FreetCollection.findByFollowees(
+      userId,
+      "$in",
+      req.query.authorId ? (req.query.authorId as string) : null
+    );
     const response = freets.map(util.constructFreetResponse);
     return res.status(200).json(response);
   }
@@ -75,7 +79,7 @@ router.get(
 /**
  * Get freets by followers
  *
- * @name GET /api/freets/feed
+ * @name GET /api/freets/explore?authorId=id
  *
  * @return {FreetResponse[]} - An array of freets created by user with id, authorId
  * @throws {403} - If no user is not signed in
@@ -86,7 +90,11 @@ router.get(
   [userValidator.isUserLoggedIn],
   async (req: Request, res: Response, next: NextFunction) => {
     const userId = (req.session.userId as string) ?? "";
-    const freets = await FreetCollection.findByFollowees(userId, "$nin");
+    const freets = await FreetCollection.findByFollowees(
+      userId,
+      "$nin",
+      req.query.authorId ? (req.query.authorId as string) : null
+    );
     const response = freets.map(util.constructFreetResponse);
     return res.status(200).json(response);
   }

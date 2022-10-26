@@ -21,11 +21,15 @@ export default {
         credentials: "same-origin", // Sends express-session credentials with request
       })
       .then((res) => {
-        const user = res.user;
-        this.$store.commit("setUsername", user ? user.username : null);
-        util.get("/api/goodSportScores").then((res) => {
-          this.$store.commit("setGoodSportScores", res ? res.score : null);
-        });
+        this.$store.commit("setUsername", res ? res.user.username : null);
+        res &&
+          util.get("/api/goodSportScores").then((res) => {
+            this.$store.commit("setGoodSportScore", res ? res.score : null);
+          });
+        res &&
+          util.get(`/api/followers?userId=${res.user._id}`).then((res) => {
+            this.$store.commit("setFollowingInfo", res ?? null);
+          });
       });
 
     // Clear alerts on page refresh

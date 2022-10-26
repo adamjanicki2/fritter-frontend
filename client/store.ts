@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
+import util from "./util";
 
 Vue.use(Vuex);
 
@@ -10,9 +11,12 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
   state: {
     filter: null, // Username to filter shown freets by (null = show all)
-    freets: [], // All freets created in the app
+    feedFreets: [], //feed freets
+    exploreFreets: [], // explore page freets
+    memories: [], // memories page freets
     username: null, // Username of the logged in user
     goodSportScore: null, // Good sport score of the logged in user
+    followingInfo: null, // Following info of the logged in user
     alerts: {}, // global success/error messages encountered during submissions to non-visible forms
   },
   mutations: {
@@ -39,6 +43,9 @@ const store = new Vuex.Store({
        */
       state.goodSportScore = score;
     },
+    setFollowingInfo(state, info) {
+      state.followingInfo = info;
+    },
     updateFilter(state, filter) {
       /**
        * Update the stored freets filter to the specified one.
@@ -46,22 +53,15 @@ const store = new Vuex.Store({
        */
       state.filter = filter;
     },
-    updateFreets(state, freets) {
-      /**
-       * Update the stored freets to the provided freets.
-       * @param freets - Freets to store
-       */
-      state.freets = freets;
-    },
     async refreshFreets(state) {
-      /**
-       * Request the server for the currently available freets.
-       */
-      const url = state.filter
+      let url = state.filter
         ? `/api/users/${state.filter}/freets`
-        : "/api/freets";
-      const res = await fetch(url).then(async (r) => r.json());
-      state.freets = res;
+        : "/api/freets/feed";
+      let res = (await util.get(url)) ?? [];
+      state.feedFreets = res;
+      url = "/api/freets/explore";
+      res = (await util.get(url)) ?? [];
+      state.exploreFreets = res;
     },
   },
   // Store data across page refreshes, only discard on browser close

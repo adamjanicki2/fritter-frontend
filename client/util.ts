@@ -22,10 +22,20 @@ async function post(url: string, options = {}): Promise<any> {
   return await (res.ok ? res.json() : null);
 }
 
+/**
+ * Make a delete request to the api
+ *
+ * @param url - URL to fetch from
+ * @param options - Options to pass to fetch
+ * @returns api response
+ */
+async function del(url: string, options = {}): Promise<any> {
+  const res = await fetch(url, { ...options, method: "DELETE" });
+  return await (res.ok ? res.json() : null);
+}
+
 export default {
   get,
   post,
-  test: () => {
-    console.log("HELLO WORLD");
-  },
+  del,
 };

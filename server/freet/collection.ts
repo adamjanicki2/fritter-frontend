@@ -76,15 +76,23 @@ class FreetCollection {
    */
   static async findByFollowees(
     userId: Types.ObjectId | string,
-    followerFilter: MongoIncludesFilter
+    followerFilter: MongoIncludesFilter,
+    authorId?: string
   ): Promise<Array<HydratedDocument<Freet>>> {
     const followees = (await FollowerCollection.getFollowees(userId)).map(
       (followee) => followee.followee
     );
+    followees.push(userId as Types.ObjectId);
     followerFilter === "$nin" && followees.push(userId as Types.ObjectId);
-    return await FreetModel.find({
+    const documents = await FreetModel.find({
       authorId: { [followerFilter]: followees },
     }).populate("authorId");
+    if (authorId) {
+      return documents.filter(
+        (document) => document.authorId._id.toString() === authorId
+      );
+    }
+    return documents;
   }
 
   /**

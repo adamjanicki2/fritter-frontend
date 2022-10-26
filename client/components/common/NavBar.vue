@@ -7,16 +7,37 @@
     <router-link to="/" class="no-underline light-blue dim pointer">
       <div class="left">
         <img src="../../public/donut.svg" />
-        <h1 class="title">Fritter</h1>
+        <h1 class="title i">Fritter</h1>
       </div>
     </router-link>
     <div class="right">
       <router-link
         v-if="$store.state.username"
+        to="/"
+        class="no-underline light-blue pointer dim"
+      >
+        My Feed
+      </router-link>
+      <router-link
+        v-if="$store.state.username"
+        to="/explore"
+        class="no-underline light-blue pointer dim"
+      >
+        Explore
+      </router-link>
+      <router-link
+        v-if="$store.state.username"
+        to="/memories"
+        class="no-underline light-blue pointer dim"
+      >
+        Memories
+      </router-link>
+      <router-link
+        v-if="$store.state.username"
         to="/account"
         class="no-underline light-blue pointer dim"
       >
-        Account
+        {{ $store.state.username }}
       </router-link>
       <router-link
         v-else
@@ -25,6 +46,7 @@
       >
         Login
       </router-link>
+      <button v-if="$store.state.username" @click="logout">Logout</button>
     </div>
     <section class="alerts">
       <article
@@ -37,6 +59,25 @@
     </section>
   </nav>
 </template>
+
+<script>
+import util from "../../util.ts";
+export default {
+  name: "NavBar",
+  methods: {
+    logout() {
+      util.del("/api/users/session").then(() => {
+        this.$store.commit("setUsername", null);
+        this.$store.commit("alert", {
+          message: "You are now signed out!",
+          status: "success",
+        });
+        this.$router.push({ name: "Home" });
+      });
+    },
+  },
+};
+</script>
 
 <style scoped>
 nav {
