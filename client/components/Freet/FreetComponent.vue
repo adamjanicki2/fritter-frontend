@@ -4,7 +4,9 @@
 <template>
   <article class="freet ma2 br3 bg-off-white">
     <header>
-      <h3 class="author">@{{ freet.author }}</h3>
+      <router-link :to="`/user?id=${freet.author}`"
+        ><h3 class="author">@{{ freet.author }}</h3></router-link
+      >
     </header>
     <textarea
       v-if="editing"
@@ -27,6 +29,7 @@
       <button v-if="!editing" @click="startEditing" class="mr2">Edit</button>
       <button @click="deleteFreet">Delete</button>
     </div>
+    <router-link :to="`/freet?id=${freet._id}`">View comments</router-link>
     <section class="alerts">
       <article
         v-for="(status, alert, index) in alerts"

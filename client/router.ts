@@ -7,6 +7,8 @@ import AccountPage from "./components/Account/AccountPage.vue";
 import MemoryPage from "./components/Freet/MemoryPage.vue";
 import LoginPage from "./components/Login/LoginPage.vue";
 import CreateAccount from "./components/Login/CreateAccount.vue";
+import SingleFreetPage from "./components/Freet/SingleFreetPage.vue";
+import ProfilePage from "./components/Account/ProfilePage.vue";
 import NotFound from "./NotFound.vue";
 
 Vue.use(VueRouter);
@@ -19,6 +21,8 @@ const routes = [
   { path: "/create", name: "Create", component: CreateAccount },
   { path: "/explore", name: "Explore", component: ExplorePage },
   { path: "/memories", name: "Memories", component: MemoryPage },
+  { path: "/freet", name: "SingleFreet", component: SingleFreetPage },
+  { path: "/user", name: "Profile", component: ProfilePage },
   { path: "*", name: "Not Found", component: NotFound },
 ];
 
