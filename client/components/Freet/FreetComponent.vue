@@ -29,7 +29,9 @@
       <button v-if="!editing" @click="startEditing" class="mr2">Edit</button>
       <button @click="deleteFreet">Delete</button>
     </div>
-    <router-link :to="`/freet?id=${freet._id}`">View comments</router-link>
+    <router-link v-if="showLinkToFreet" :to="`/freet?id=${freet._id}`"
+      >View comments</router-link
+    >
     <section class="alerts">
       <article
         v-for="(status, alert, index) in alerts"
@@ -50,6 +52,11 @@ export default {
     freet: {
       type: Object,
       required: true,
+    },
+    showLinkToFreet: {
+      type: Boolean,
+      default: true,
+      required: false,
     },
   },
   data() {

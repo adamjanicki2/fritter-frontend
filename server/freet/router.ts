@@ -33,7 +33,7 @@ router.get(
   "/",
   async (req: Request, res: Response, next: NextFunction) => {
     // Check if authorId query parameter was supplied
-    if (req.query.author !== undefined) {
+    if (req.query.author || req.query.freetId) {
       next();
       return;
     }
@@ -41,6 +41,17 @@ router.get(
     const allFreets = await FreetCollection.findAll();
     const response = allFreets.map(util.constructFreetResponse);
     res.status(200).json(response);
+  },
+  async (req: Request, res: Response, next: NextFunction) => {
+    if (req.query.authorId) {
+      next();
+      return;
+    }
+    const freet = await FreetCollection.findById(req.query.freetId as string);
+    if (!freet) {
+      return res.status(404).json({ message: "Freet not found" });
+    }
+    return res.status(200).json(util.constructFreetResponse(freet));
   },
   [userValidator.isAuthorExists],
   async (req: Request, res: Response) => {
