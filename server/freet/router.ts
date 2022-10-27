@@ -188,4 +188,15 @@ router.put(
   }
 );
 
+router.get(
+  "/memories",
+  [userValidator.isUserLoggedIn],
+  async (req: Request, res: Response) => {
+    const memories = await FreetCollection.findMemories(
+      req.session.userId as string
+    );
+    return res.status(200).json(memories);
+  }
+);
+
 export { router as freetRouter };

@@ -46,6 +46,9 @@ const store = new Vuex.Store({
     setFollowingInfo(state, info) {
       state.followingInfo = info;
     },
+    setMemories(state, memories) {
+      state.memories = memories;
+    },
     updateFilter(state, filter) {
       /**
        * Update the stored freets filter to the specified one.

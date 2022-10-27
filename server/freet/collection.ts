@@ -168,6 +168,30 @@ class FreetCollection {
     freet[stat] += inc;
     await freet.save();
   }
+
+  /**
+   * Get memories for a user
+   *
+   * @param userId id of the user
+   * @returns list of memories
+   */
+  static async findMemories(
+    userId: Types.ObjectId | string
+  ): Promise<Array<HydratedDocument<Freet>>> {
+    const oneYearAgo = new Date(
+      new Date().setFullYear(new Date().getFullYear() - 1)
+    )
+      .toISOString()
+      .split("T")[0];
+    const lower = oneYearAgo + "T00:00:00.000Z";
+    const upper = oneYearAgo + "T23:59:59.999Z";
+
+    const memories = await FreetModel.find({
+      dateCreated: { $gte: lower, $lte: upper },
+      authorId: userId,
+    }).populate("authorId");
+    return memories;
+  }
 }
 
 export default FreetCollection;
