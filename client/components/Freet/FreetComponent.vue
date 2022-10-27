@@ -16,16 +16,16 @@
       {{ freet.content }}
     </p>
     <p class="info">
-      Posted at {{ freet.dateModified }}
+      {{ freet.dateModified }}
       <i v-if="freet.edited">(edited)</i>
     </p>
     <div v-if="$store.state.username === freet.author" class="actions">
-      <button v-if="editing" @click="submitEdit">✅ Save changes</button>
+      <button v-if="editing" @click="submitEdit">Save changes</button>
       <button v-if="editing" @click="stopEditing" class="mh2">
-        🚫 Discard changes
+        Discard changes
       </button>
-      <button v-if="!editing" @click="startEditing" class="mr2">✏️ Edit</button>
-      <button @click="deleteFreet">🗑️ Delete</button>
+      <button v-if="!editing" @click="startEditing" class="mr2">Edit</button>
+      <button @click="deleteFreet">Delete</button>
     </div>
     <section class="alerts">
       <article

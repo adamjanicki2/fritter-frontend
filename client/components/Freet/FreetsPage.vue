@@ -8,23 +8,6 @@
       </header>
       <CreateFreetForm />
     </section>
-    <section v-else>
-      <header>
-        <h1 class="m-auto">Welcome to Fritter!</h1>
-      </header>
-      <div class="flex flex-column items-center">
-        <h3 class="tc">
-          <router-link to="/login">Sign in</router-link>
-          to get started.
-        </h3>
-        <img
-          src="../../public/donut.svg"
-          width="400px"
-          height="400px"
-          class="m-auto ma4 spinning-donut"
-        />
-      </div>
-    </section>
     <section v-if="$store.state.username">
       <header>
         <div class="left">
@@ -39,8 +22,8 @@
           <GetFreetsForm
             ref="getFreetsForm"
             value="author"
-            placeholder="🔍 Filter by author (optional)"
-            button="🔄 Get freets"
+            placeholder="Search by author"
+            button="Get freets"
           />
         </div>
       </header>
@@ -97,22 +80,5 @@ section .scrollbox {
   flex: 1 0 50vh;
   padding: 3%;
   overflow-y: scroll;
-}
-
-/* Donut animation (used CSS from React sandbox) */
-
-@media (prefers-reduced-motion: no-preference) {
-  .spinning-donut {
-    animation: logo-spin infinite 30s linear;
-  }
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }
 </style>

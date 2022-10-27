@@ -5,28 +5,24 @@
   <main>
     <section>
       <header>
-        <h2>New to Fritter?</h2>
-      </header>
-      <RegisterForm />
-    </section>
-    <section>
-      <header>
-        <h2>Have an account?</h2>
+        <h2>Already joined Fritter?</h2>
       </header>
       <LoginForm />
+      <h3 class="tc">
+        New to Fritter?
+        <router-link to="/create">Create your account</router-link>.
+      </h3>
     </section>
   </main>
 </template>
 
 <script>
-import RegisterForm from '@/components/Login/RegisterForm.vue';
-import LoginForm from '@/components/Login/LoginForm.vue';
+import LoginForm from "@/components/Login/LoginForm.vue";
 
 export default {
-  name: 'LoginPage',
+  name: "LoginPage",
   components: {
-    RegisterForm,
-    LoginForm
-  }
+    LoginForm,
+  },
 };
 </script>

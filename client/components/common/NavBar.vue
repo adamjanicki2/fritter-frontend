@@ -13,7 +13,7 @@
     <div class="right">
       <router-link
         v-if="$store.state.username"
-        to="/"
+        to="/feed"
         class="no-underline light-blue pointer dim"
       >
         My Feed
@@ -40,7 +40,14 @@
         {{ $store.state.username }}
       </router-link>
       <router-link
-        v-else
+        v-if="!$store.state.username"
+        to="/create"
+        class="no-underline light-blue pointer dim"
+      >
+        Create Account
+      </router-link>
+      <router-link
+        v-if="!$store.state.username"
         to="/login"
         class="no-underline light-blue pointer dim"
       >

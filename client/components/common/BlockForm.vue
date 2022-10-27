@@ -2,7 +2,7 @@
 <!-- This is just an example; feel free to define any reusable components you want! -->
 
 <template>
-  <form @submit.prevent="submit">
+  <form @submit.prevent="submit" class="br3">
     <h3>{{ title }}</h3>
     <article v-if="fields.length">
       <div v-for="field in fields" :key="field.id">
