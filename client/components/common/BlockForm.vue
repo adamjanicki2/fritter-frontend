@@ -68,15 +68,17 @@ export default {
         credentials: "same-origin", // Sends express-session credentials with request
       };
       if (this.hasBody) {
-        options.body = JSON.stringify(
-          Object.fromEntries(
+        const def = this.defaultBody ?? {};
+        options.body = JSON.stringify({
+          ...Object.fromEntries(
             this.fields.map((field) => {
               const { id, value } = field;
               field.value = "";
               return [id, value];
             })
-          )
-        );
+          ),
+          ...def,
+        });
       }
 
       try {

@@ -10,6 +10,11 @@
       <section v-if="freet">
         <FreetComponent key="freet" :freet="freet" :showLinkToFreet="false" />
       </section>
+      <CreateCommentForm
+        v-if="freet"
+        :freetId="freet._id"
+        :createCommentCallback="undefined"
+      />
       <section>
         <h3 v-for="comment in comments">{{ JSON.stringify(comments) }}</h3>
       </section>
@@ -19,12 +24,15 @@
 
 <script>
 import FreetComponent from "@/components/Freet/FreetComponent.vue";
+import CreateCommentForm from "@/components/Comment/CreateCommentForm.vue";
+
 import util from "../../util.ts";
 
 export default {
   name: "SingleFreetPage",
   components: {
     FreetComponent,
+    CreateCommentForm,
   },
   mounted() {
     const { id } = this.$route.query;

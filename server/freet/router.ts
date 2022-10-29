@@ -43,7 +43,7 @@ router.get(
     res.status(200).json(response);
   },
   async (req: Request, res: Response, next: NextFunction) => {
-    if (req.query.authorId) {
+    if (req.query.author) {
       next();
       return;
     }

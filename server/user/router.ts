@@ -9,6 +9,7 @@ import CommentCollection from "../comment/collection";
 import LikeCollection from "../like/collection";
 import FollowerCollection from "../follower/collection";
 import FlagCollection from "../flag/collection";
+import { isInfoSupplied, isInfoValidId } from "../common/middleware";
 
 const router = express.Router();
 
@@ -164,6 +165,19 @@ router.delete(
     res.status(200).json({
       message: "Your account has been deleted successfully.",
     });
+  }
+);
+
+router.get(
+  "/",
+  [isInfoSupplied("query", ["username"])],
+  async (req: Request, res: Response) => {
+    const { username } = req.query;
+    const user = await UserCollection.findOneByUsername(username as string);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    res.status(200).json({ user: util.constructUserResponse(user) });
   }
 );
 

@@ -90,7 +90,9 @@ class FreetCollection {
     followerFilter === "$nin" && followees.push(userId as Types.ObjectId);
     const documents = await FreetModel.find({
       authorId: { [followerFilter]: followees },
-    }).populate("authorId");
+    })
+      .sort({ datePosted: "desc" })
+      .populate("authorId");
     if (authorId) {
       return documents.filter(
         (document) => document.authorId._id.toString() === authorId

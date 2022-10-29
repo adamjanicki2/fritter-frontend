@@ -44,9 +44,6 @@ import GetFreetsForm from "@/components/Freet/GetFreetsForm.vue";
 export default {
   name: "MemoryPage",
   components: { FreetComponent, GetFreetsForm, CreateFreetForm },
-  mounted() {
-    this.$refs.getFreetsForm.submit();
-  },
 };
 </script>
 
