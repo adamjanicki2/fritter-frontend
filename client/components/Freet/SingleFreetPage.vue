@@ -10,13 +10,24 @@
       <section v-if="freet">
         <FreetComponent key="freet" :freet="freet" :showLinkToFreet="false" />
       </section>
-      <CreateCommentForm
-        v-if="freet"
-        :freetId="freet._id"
-        :createCommentCallback="undefined"
-      />
       <section>
-        <h3 v-for="comment in comments">{{ JSON.stringify(comments) }}</h3>
+        <h2>Comments</h2>
+        <CreateCommentForm
+          v-if="freet"
+          :freetId="freet._id"
+          :newCommentCallback="
+            (comment) => {
+              comments.unshift(comment);
+            }
+          "
+        />
+        <CommentComponent
+          v-for="comment in comments"
+          :key="comment._id"
+          :comment="comment"
+          :deleteCommentCallback="deleteCommentCallback"
+        />
+        <h3 v-if="!comments?.length">No comments yet.</h3>
       </section>
     </section>
   </main>
@@ -24,6 +35,7 @@
 
 <script>
 import FreetComponent from "@/components/Freet/FreetComponent.vue";
+import CommentComponent from "@/components/Comment/CommentComponent.vue";
 import CreateCommentForm from "@/components/Comment/CreateCommentForm.vue";
 
 import util from "../../util.ts";
@@ -33,6 +45,7 @@ export default {
   components: {
     FreetComponent,
     CreateCommentForm,
+    CommentComponent,
   },
   mounted() {
     const { id } = this.$route.query;
@@ -46,6 +59,15 @@ export default {
   },
   data() {
     return { freet: undefined, comments: null };
+  },
+  methods: {
+    deleteCommentCallback(commentId) {
+      util.del(`/api/comments/${commentId}`).then((res) => {
+        if (res) {
+          this.comments = this.comments.filter((c) => c._id !== commentId);
+        }
+      });
+    },
   },
 };
 </script>

@@ -91,7 +91,7 @@ class FreetCollection {
     const documents = await FreetModel.find({
       authorId: { [followerFilter]: followees },
     })
-      .sort({ datePosted: "desc" })
+      .sort({ dateCreated: "desc" })
       .populate("authorId");
     if (authorId) {
       return documents.filter(

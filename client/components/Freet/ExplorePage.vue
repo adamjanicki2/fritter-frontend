@@ -42,9 +42,6 @@ import GetFreetsForm from "@/components/Freet/GetFreetsForm.vue";
 export default {
   name: "ExplorePage",
   components: { FreetComponent, GetFreetsForm, CreateFreetForm },
-  mounted() {
-    this.$refs.getFreetsForm.submit();
-  },
 };
 </script>
 

@@ -4,7 +4,7 @@
 <template>
   <article class="freet ma2 br3 bg-off-white">
     <header>
-      <router-link :to="`/user?id=${freet.author}`"
+      <router-link :to="`/user?username=${freet.author}`"
         ><h3 class="author">@{{ freet.author }}</h3></router-link
       >
     </header>
@@ -21,7 +21,10 @@
       {{ freet.dateModified }}
       <i v-if="freet.edited">(edited)</i>
     </p>
-    <div v-if="$store.state.username === freet.author" class="actions">
+    <div
+      v-if="$store.state.username === freet.author && showLinkToFreet"
+      class="actions"
+    >
       <button v-if="editing" @click="submitEdit">Save changes</button>
       <button v-if="editing" @click="stopEditing" class="mh2">
         Discard changes

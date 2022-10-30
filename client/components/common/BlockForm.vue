@@ -41,6 +41,8 @@
 </template>
 
 <script>
+import util from "../../util.ts";
+
 export default {
   name: "BlockForm",
   data() {
@@ -82,20 +84,13 @@ export default {
       }
 
       try {
-        const r = await fetch(this.url, options);
-        if (!r.ok) {
-          // If response is not okay, we throw an error and enter the catch block
-          const res = await r.json();
-          throw new Error(res.error);
+        const r = await util.post(this.url, options);
+        if (!r) {
+          throw new Error("Something went wrong!");
         }
 
         if (this.setUsername) {
-          const text = await r.text();
-          const res = text ? JSON.parse(text) : { user: null };
-          this.$store.commit(
-            "setUsername",
-            res.user ? res.user.username : null
-          );
+          this.$store.commit("setUsername", r.user ? r.user.username : null);
         }
 
         if (this.refreshFreets) {
@@ -103,7 +98,7 @@ export default {
         }
 
         if (this.callback) {
-          this.callback();
+          this.callback(r);
         }
       } catch (e) {
         this.$set(this.alerts, e, "error");
