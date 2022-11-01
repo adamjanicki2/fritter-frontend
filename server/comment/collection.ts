@@ -35,6 +35,7 @@ class CommentCollection {
       FreetCollection.incrementStats(parentId, "comments", 1);
     }
     await GoodSportScoreCollection.updateOne(authorId, true, content);
+    console.log({ comment });
     return comment.populate("authorId");
   }
 
@@ -78,6 +79,7 @@ class CommentCollection {
       _id: commentId,
     });
     const parentType = deletedComment?.parentType;
+    console.log({ parentType, deletedComment });
     if (parentType === "freet") {
       FreetCollection.incrementStats(deletedComment.parentId, "comments", -1);
     }

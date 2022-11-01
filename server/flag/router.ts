@@ -35,18 +35,6 @@ router.get(
   }
 );
 
-/**
- * Create a new flag.
- *
- * @name POST /api/flags
- *
- * @param {string} parentId - the id of the parent
- * @param {"comment" | "freet"} parentType - the type of the parent
- * @return {HydratedDocument<Flag>} - The created flag
- * @throws {403} - If the user is not logged in
- * @throws {400} if wrong parentType supplied
- * @throws {404} if parent does not exist, or already liked
- */
 router.post(
   "/",
   [
@@ -55,41 +43,25 @@ router.post(
     middleware.isInfoValidId("body", ["parentId"]),
     middleware.isValidParentType("body"),
     middleware.doesParentExist("body"),
-    middleware.doesDuplicateExist("flag", "body"),
   ],
   async (req: Request, res: Response) => {
     const userId = req.session.userId as string;
     const { parentId, parentType } = req.body;
-    const flag = await FlagCollection.addOne(userId, parentId, parentType);
-    res.status(201).json({
-      message: "You flaggedd the item successfully.",
-      flag,
-    });
-  }
-);
-
-/**
- * Delete a flag
- *
- * @name DELETE /api/flags/:id
- *
- * @return {string} - A success message
- * @throws {403} - If the user is not logged in or is not the flagger
- * @throws {400} - if the parent id is not supplied or invalid id length
- */
-router.delete(
-  "/:parentId?",
-  [
-    userValidator.isUserLoggedIn,
-    middleware.isInfoSupplied("params", ["parentId"]),
-    middleware.isInfoValidId("params", ["parentId"]),
-  ],
-  async (req: Request, res: Response) => {
-    const parentId = req.params.parentId;
-    const userId = req.session.userId as string;
-    await FlagCollection.deleteOne(userId, parentId);
-    res.status(200).json({
-      message: "Your flag was deleted successfully.",
+    const hasFlagged = await FlagCollection.findByUserId(
+      userId,
+      parentId as string
+    );
+    const result = hasFlagged
+      ? await FlagCollection.deleteOne(userId, parentId as string)
+      : await FlagCollection.addOne(userId, parentId, parentType);
+    if (result) {
+      return res.status(201).json({
+        message: "You flagged the item successfully.",
+        increment: hasFlagged ? -1 : 1,
+      });
+    }
+    res.status(404).json({
+      message: "There was an error flagging this item.",
     });
   }
 );

@@ -12,25 +12,6 @@ const COLLECTIONS = {
   like: LikeCollection.findByUserId,
 } as const;
 
-export const doesDuplicateExist = (
-  collection: "flag" | "like",
-  reqInfoType: RequestInformation
-) => {
-  return async (req: Request, res: Response, next: NextFunction) => {
-    const { parentId } = req[reqInfoType];
-    const doesExist = await COLLECTIONS[collection](
-      req.session.userId,
-      parentId
-    );
-    if (doesExist) {
-      return res
-        .status(404)
-        .json({ message: `There's already a ${collection} for this user!` });
-    }
-    next();
-  };
-};
-
 /**
  * Checks if the content of the freet/comment in req.body is valid, i.e not a stream of empty
  * spaces and not more than 140 characters
@@ -108,6 +89,7 @@ export const isInfoValidId = (
 ) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     const information = req[reqInfoType];
+    console.log(information);
     for (const field of fields) {
       if (!Types.ObjectId.isValid(information[field])) {
         return res.status(400).json({

@@ -12,10 +12,11 @@
       <header>
         <div class="left">
           <h2>
-            Viewing all freets from your following
+            Viewing all freets
             <span v-if="$store.state.filter">
               by @{{ $store.state.filter }}
             </span>
+            <span v-else>from your following</span>
           </h2>
         </div>
         <div class="right">

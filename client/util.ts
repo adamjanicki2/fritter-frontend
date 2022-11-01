@@ -18,7 +18,12 @@ async function get(url: string, options = {}): Promise<any> {
  * @returns api response
  */
 async function post(url: string, options = {}): Promise<any> {
-  const res = await fetch(url, { ...options, method: "POST" });
+  const res = await fetch(url, {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "same-origin",
+  });
   return await (res.ok ? res.json() : null);
 }
 

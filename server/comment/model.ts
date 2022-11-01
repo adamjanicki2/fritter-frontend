@@ -38,6 +38,10 @@ const CommentSchema = new Schema<Comment>({
     type: Schema.Types.ObjectId,
     required: true,
   },
+  parentType: {
+    type: String,
+    required: true,
+  },
   // The date the comment was created
   dateCreated: {
     type: Date,

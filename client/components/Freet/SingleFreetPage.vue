@@ -15,11 +15,7 @@
         <CreateCommentForm
           v-if="freet"
           :freetId="freet._id"
-          :newCommentCallback="
-            (comment) => {
-              comments.unshift(comment);
-            }
-          "
+          :newCommentCallback="newCommentCallback"
         />
         <CommentComponent
           v-for="comment in comments"
@@ -65,7 +61,16 @@ export default {
       util.del(`/api/comments/${commentId}`).then((res) => {
         if (res) {
           this.comments = this.comments.filter((c) => c._id !== commentId);
+          this.freet.comments--;
         }
+      });
+    },
+    newCommentCallback(comment) {
+      this.comments.unshift(comment);
+      this.freet.comments++;
+      this.$store.commit("alert", {
+        message: "You posted a comment.",
+        status: "success",
       });
     },
   },

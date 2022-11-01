@@ -8,6 +8,7 @@ import * as middleware from "../common/middleware";
 import CommentCollection from "../comment/collection";
 import FlagCollection from "../flag/collection";
 import LikeCollection from "../like/collection";
+import { Types } from "mongoose";
 
 const router = express.Router();
 
@@ -32,20 +33,12 @@ const router = express.Router();
 router.get(
   "/",
   async (req: Request, res: Response, next: NextFunction) => {
-    // Check if authorId query parameter was supplied
-    if (req.query.author || req.query.freetId) {
-      next();
-      return;
-    }
-
-    const allFreets = await FreetCollection.findAll();
-    const response = allFreets.map(util.constructFreetResponse);
-    res.status(200).json(response);
-  },
-  async (req: Request, res: Response, next: NextFunction) => {
     if (req.query.author) {
       next();
       return;
+    }
+    if (!Types.ObjectId.isValid((req.params.parentId as string) ?? "")) {
+      return res.status(400).json({ message: "Invalid parentId" });
     }
     const freet = await FreetCollection.findById(req.query.freetId as string);
     if (!freet) {

@@ -23,7 +23,7 @@
     </p>
     <div
       v-if="$store.state.username === freet.author && showLinkToFreet"
-      class="actions"
+      class="actions mb2"
     >
       <button v-if="editing" @click="submitEdit">Save changes</button>
       <button v-if="editing" @click="stopEditing" class="mh2">
@@ -32,9 +32,34 @@
       <button v-if="!editing" @click="startEditing" class="mr2">Edit</button>
       <button @click="deleteFreet">Delete</button>
     </div>
-    <router-link v-if="showLinkToFreet" :to="`/freet?id=${freet._id}`"
+    <router-link
+      class="mv5"
+      v-if="showLinkToFreet"
+      :to="`/freet?id=${freet._id}`"
       >View comments</router-link
     >
+    <section>
+      <div class="flex flex-row items-center">
+        <img
+          @click="like"
+          src="../../public/heart.svg"
+          width="32px"
+          height="32px"
+          class="pointer dim"
+        />
+        <span class="ml1 mr3 f3 fw4">{{ freet.likes }}</span>
+        <img
+          @click="flag"
+          src="../../public/flag.svg"
+          width="32px"
+          height="32px"
+          class="pointer dim"
+        />
+        <span class="ml1 mr3 f3 fw4">{{ freet.flags }}</span>
+        <img src="../../public/comment.svg" />
+        <span class="f3 fw4">{{ freet.comments }}</span>
+      </div>
+    </section>
     <section class="alerts">
       <article
         v-for="(status, alert, index) in alerts"
@@ -48,6 +73,8 @@
 </template>
 
 <script>
+import util from "../../util.ts";
+
 export default {
   name: "FreetComponent",
   props: {
@@ -83,6 +110,56 @@ export default {
        */
       this.editing = false;
       this.draft = this.freet.content;
+    },
+    like() {
+      util
+        .post("/api/likes", {
+          body: JSON.stringify({
+            parentId: this.freet._id,
+            parentType: "freet",
+          }),
+        })
+        .then((res) => {
+          if (res) {
+            this.freet.likes += res.increment;
+            this.$store.commit("alert", {
+              message: `You ${
+                res.increment > 0 ? "liked" : "unliked"
+              } this freet.`,
+              status: "success",
+            });
+          } else {
+            this.$store.commit("alert", {
+              message: "There was an error liking this freet.",
+              status: "error",
+            });
+          }
+        });
+    },
+    flag() {
+      util
+        .post("/api/flags", {
+          body: JSON.stringify({
+            parentId: this.freet._id,
+            parentType: "freet",
+          }),
+        })
+        .then((res) => {
+          if (res) {
+            this.freet.flags += res.increment;
+            this.$store.commit("alert", {
+              message: `You ${
+                res.increment > 0 ? "flagged" : "unflagged"
+              } this freet.`,
+              status: "success",
+            });
+          } else {
+            this.$store.commit("alert", {
+              message: "There was an error flagging this freet.",
+              status: "error",
+            });
+          }
+        });
     },
     deleteFreet() {
       /**

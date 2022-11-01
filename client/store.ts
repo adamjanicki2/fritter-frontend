@@ -58,7 +58,7 @@ const store = new Vuex.Store({
     },
     async refreshFreets(state) {
       let url = state.filter
-        ? `/api/users/${state.filter}/freets`
+        ? `/api/freets?author=${state.filter}`
         : "/api/freets/feed";
       let res = (await util.get(url)) ?? [];
       state.feedFreets = res;

@@ -4,19 +4,19 @@
   <main>
     <section>
       <header>
-        <h1 class="m-auto">Welcome to Fritter!</h1>
+        <h1 class="m-auto f1">Welcome to Fritter!</h1>
       </header>
       <div class="flex flex-column items-center">
-        <h3 class="tc" v-if="!$store.state.username">
+        <h2 class="tc" v-if="!$store.state.username">
           <router-link to="/login">Sign in</router-link>
           or
           <router-link to="/create">create an account</router-link>
           to get started.
-        </h3>
-        <h4>
+        </h2>
+        <h2>
           Fritter is a platform to share everything you want. Start Sharing
           today!
-        </h4>
+        </h2>
         <img
           src="../../public/donut.svg"
           width="400px"
