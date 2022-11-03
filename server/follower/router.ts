@@ -8,7 +8,24 @@ import { isInfoSupplied, isInfoValidId } from "../common/middleware";
 const router = express.Router();
 
 router.get(
-  "/:userId?",
+  "/isFollowing/:userId?",
+  [
+    isInfoSupplied("query", ["userId"]),
+    isInfoValidId("query", ["userId"]),
+    userValidator.isUserLoggedIn,
+  ],
+  async (req: Request, res: Response, next: NextFunction) => {
+    return res.json({
+      isFollowing: await FollowerCollection.doesFollow(
+        req.session.userId,
+        req.query.userId as string
+      ),
+    });
+  }
+);
+
+router.get(
+  "/followingStats/:userId?",
   [isInfoSupplied("query", ["userId"]), isInfoValidId("query", ["userId"])],
   async (req: Request, res: Response, next: NextFunction) => {
     const userId = req.query.userId;

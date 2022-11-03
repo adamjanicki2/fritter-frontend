@@ -13,10 +13,8 @@ const store = new Vuex.Store({
     filter: null, // Username to filter shown freets by (null = show all)
     feedFreets: [], //feed freets
     exploreFreets: [], // explore page freets
-    memories: [], // memories page freets
     username: null, // Username of the logged in user
-    goodSportScore: null, // Good sport score of the logged in user
-    followingInfo: null, // Following info of the logged in user
+    userId: null, // Id of the logged in user
     alerts: {}, // global success/error messages encountered during submissions to non-visible forms
   },
   mutations: {
@@ -36,18 +34,8 @@ const store = new Vuex.Store({
        */
       state.username = username;
     },
-    setGoodSportScore(state, score) {
-      /**
-       * Update the stored score to the specified one.
-       * @param score - new score to set
-       */
-      state.goodSportScore = score;
-    },
-    setFollowingInfo(state, info) {
-      state.followingInfo = info;
-    },
-    setMemories(state, memories) {
-      state.memories = memories;
+    setUserId(state, id) {
+      state.userId = id;
     },
     updateFilter(state, filter) {
       /**

@@ -89,7 +89,6 @@ export const isInfoValidId = (
 ) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     const information = req[reqInfoType];
-    console.log(information);
     for (const field of fields) {
       if (!Types.ObjectId.isValid(information[field])) {
         return res.status(400).json({

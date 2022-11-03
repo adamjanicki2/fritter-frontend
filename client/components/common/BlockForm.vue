@@ -91,6 +91,7 @@ export default {
 
         if (this.setUsername) {
           this.$store.commit("setUsername", r.user ? r.user.username : null);
+          this.$store.commit("setUserId", r.user ? r.user._id : null);
         }
 
         if (this.refreshFreets) {

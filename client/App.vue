@@ -22,17 +22,7 @@ export default {
       })
       .then((res) => {
         this.$store.commit("setUsername", res ? res.user.username : null);
-        if (res) {
-          util.get("/api/goodSportScores").then((res) => {
-            this.$store.commit("setGoodSportScore", res ? res.score : null);
-          });
-          util.get(`/api/followers?userId=${res.user._id}`).then((res) => {
-            this.$store.commit("setFollowingInfo", res ?? null);
-          });
-          util.get("/api/freets/memories").then((res) => {
-            this.$store.commit("setMemories", res ?? []);
-          });
-        }
+        this.$store.commit("setUserId", res ? res.user._id : null);
       });
 
     // Clear alerts on page refresh

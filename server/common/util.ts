@@ -9,8 +9,20 @@ import { Types } from "mongoose";
  * @param {Date} date - A date object
  * @returns {string} - formatted date as string
  */
-export const formatDate = (date: Date): string =>
-  moment(date).format("MMMM Do YYYY, h:mm:ss a");
+export const formatDate = (date: Date): string => {
+  const splitted = date.toString().split(" ");
+  const year = `'${splitted[3].substring(2)}`;
+  const dayMonth = splitted[1] + " " + splitted[2];
+  const hour = date.getHours();
+  const minutes = date.getMinutes();
+  return (
+    dayMonth +
+    " " +
+    year +
+    " @ " +
+    `${hour % 12}:${minutes} ${hour < 12 ? "AM" : "PM"}`
+  );
+};
 
 export const PARENT_TO_INCREMENT_FUNC = {
   comment: CommentCollection.incrementStats,

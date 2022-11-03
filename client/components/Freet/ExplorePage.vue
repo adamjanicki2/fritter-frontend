@@ -8,13 +8,7 @@
     <section>
       <header>
         <div class="left">
-          <h2>
-            Explore Freets
-            <span v-if="$store.state.filter">
-              by @{{ $store.state.filter }}
-            </span>
-            <span v-else>from unknown users</span>
-          </h2>
+          <h2>Explore Freets from random users</h2>
         </div>
       </header>
       <section v-if="$store.state.exploreFreets.length">

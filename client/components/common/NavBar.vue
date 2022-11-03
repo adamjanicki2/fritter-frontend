@@ -75,6 +75,7 @@ export default {
     logout() {
       util.del("/api/users/session").then(() => {
         this.$store.commit("setUsername", null);
+        this.$store.commit("setUserId", null);
         this.$store.commit("alert", {
           message: "You are now signed out!",
           status: "success",

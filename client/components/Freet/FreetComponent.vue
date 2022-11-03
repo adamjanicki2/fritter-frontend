@@ -4,8 +4,10 @@
 <template>
   <article class="freet ma2 br3 bg-off-white">
     <header>
-      <router-link :to="`/user?username=${freet.author}`"
-        ><h3 class="author">@{{ freet.author }}</h3></router-link
+      <router-link class="no-underline" :to="`/user?username=${freet.author}`"
+        ><h3 class="f3 fw5 black i dim underline-hover">
+          @{{ freet.author }}
+        </h3></router-link
       >
     </header>
     <textarea
@@ -33,7 +35,7 @@
       <button @click="deleteFreet">Delete</button>
     </div>
     <router-link
-      class="mv5"
+      class="mv5 no-underline underline-hover i black"
       v-if="showLinkToFreet"
       :to="`/freet?id=${freet._id}`"
       >View comments</router-link

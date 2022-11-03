@@ -38,6 +38,10 @@
     background-color: var(--white);
 }
 
+.w-fc {
+  width: fit-content;
+}
+
 .light-blue {
     color: var(--light-blue);
 }

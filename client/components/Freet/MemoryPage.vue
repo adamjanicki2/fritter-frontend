@@ -11,9 +11,9 @@
           <h2>Your memories</h2>
         </div>
       </header>
-      <section v-if="$store.state.memories.length">
+      <section v-if="memories.length">
         <FreetComponent
-          v-for="freet in $store.state.memories"
+          v-for="freet in memories"
           :key="freet.id"
           :freet="freet"
         />
@@ -40,10 +40,21 @@
 import FreetComponent from "@/components/Freet/FreetComponent.vue";
 import CreateFreetForm from "@/components/Freet/CreateFreetForm.vue";
 import GetFreetsForm from "@/components/Freet/GetFreetsForm.vue";
+import util from "../../util.ts";
 
 export default {
   name: "MemoryPage",
   components: { FreetComponent, GetFreetsForm, CreateFreetForm },
+  data() {
+    return {
+      memories: [],
+    };
+  },
+  mounted() {
+    util.get(`/api/freets/memories`).then((res) => {
+      this.memories = res ?? [];
+    });
+  },
 };
 </script>
 
